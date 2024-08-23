@@ -23,10 +23,8 @@ func rgbToHsl(r, g, b float64) (h, s, l float64) {
 	switch {
 	case min == max:
 		h = 0
-	case max == r && g < b:
-		h = 60*(g-b)/(max-min) + 360
 	case max == r:
-		h = 60*(g-b)/(max-min) + 0
+		h = 60 * math.Mod((g-b)/(max-min)+360, 6)
 	case max == g:
 		h = 60*(b-r)/(max-min) + 120
 	case max == b:

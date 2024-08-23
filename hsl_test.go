@@ -7,40 +7,42 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// https://www.rapidtables.com/convert/color/rgb-to-hsl.html
+var colors = map[color.RGBA]HSL{
+	{0x00, 0x00, 0x00, 0xff}: {0, 0, 0},        // Black
+	{0xff, 0xff, 0xff, 0xff}: {0, 0, 1},        // White
+	{0xff, 0x00, 0x00, 0xff}: {0, 1.0, 0.5},    // Red
+	{0x00, 0xff, 0x00, 0xff}: {120, 1, 0.5},    // Lime
+	{0x00, 0x00, 0xff, 0xff}: {240, 1.0, 0.5},  // Blue
+	{0xff, 0xff, 0x00, 0xff}: {60, 1.0, 0.5},   // Yellow
+	{0x00, 0xff, 0xff, 0xff}: {180, 1.0, 0.5},  // Cyan
+	{0xff, 0x00, 0xff, 0xff}: {300, 1.0, 0.5},  // Magenta
+	{0xbf, 0xbf, 0xbf, 0xff}: {0, 0, 0.75},     // Silver
+	{0x80, 0x80, 0x80, 0xff}: {0, 0, 0.5},      // Gray
+	{0x80, 0x00, 0x00, 0xff}: {0, 1.0, 0.25},   // Maroon
+	{0x80, 0x80, 0x00, 0xff}: {60, 1.0, 0.25},  // Olive
+	{0x00, 0x80, 0x00, 0xff}: {120, 1.0, 0.25}, // Green
+	{0x80, 0x00, 0x80, 0xff}: {300, 1.0, 0.25}, // Purple
+	{0x00, 0x80, 0x80, 0xff}: {180, 1.0, 0.25}, // Teal
+	{0x00, 0x00, 0x80, 0xff}: {240, 1.0, 0.25}, // Navy
+
+	{200, 200, 20, 0xFF}:  {60.00, .8182, .4313},
+	{201, 200, 20, 0xFF}:  {59.67, .8190, .4333},
+	{155, 245, 135, 0xFF}: {109.09, .8462, .7451},
+}
+
 func TestHsl(t *testing.T) {
-
-	var colors = []color.RGBA{
-		{39, 45, 45, 255},
-		{0, 0, 160, 255},
-		{0, 160, 0, 255},
-		{160, 0, 0, 255},
-		{0, 200, 160, 255},
-		{200, 160, 0, 255},
-		{160, 0, 200, 255},
-		{50, 200, 160, 255},
-		{200, 160, 30, 255},
-		{160, 78, 200, 255},
-	}
-
-	for _, clr := range colors {
+	for c0 := range colors {
 		var (
-			hsl = FromColor(clr)
+			hsl = FromColor(c0)
 			c1  = hsl.ToRGBA()
 		)
 
-		assert.Equal(t, clr, c1)
+		assert.Equal(t, c0, c1)
 	}
 }
 
 func TestToHSL(t *testing.T) {
-	var colors = map[color.RGBA]HSL{
-		{35, 206, 107, 255}:  {145, .71, .47},
-		{39, 45, 45, 255}:    {180, .07, .16},
-		{246, 248, 255, 255}: {227, 1, .98},
-		{168, 70, 160, 255}:  {305, .41, .47},
-		{80, 81, 79, 255}:    {90, .01, .31},
-	}
-
 	for d, c0 := range colors {
 		c1 := FromColor(d)
 		assert.True(t, c1.Equals(c0), "%v should be %v", c1, c0)
@@ -48,14 +50,6 @@ func TestToHSL(t *testing.T) {
 }
 
 func TestToRGB(t *testing.T) {
-	var colors = map[color.RGBA]HSL{
-		{35, 206, 107, 255}:  {145, .71, .47},
-		{39, 45, 45, 255}:    {180, .07, .16},
-		{246, 248, 255, 255}: {227, 1, .98},
-		{168, 70, 160, 255}:  {305, .41, .47},
-		{80, 81, 79, 255}:    {90, .01, .31},
-	}
-
 	for c0, d := range colors {
 		c1 := d.ToRGBA()
 		assert.Equal(t, c0, c1)

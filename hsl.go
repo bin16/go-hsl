@@ -42,19 +42,9 @@ func (clr HSL) RGBA() (r, g, b, a uint32) {
 }
 
 func (clr HSL) Equals(clr1 HSL) bool {
-	if math.Round(clr.H) != math.Round(clr1.H) {
-		return false
-	}
-
-	if math.Round(clr.S*100) != math.Round(clr1.S*100) {
-		return false
-	}
-
-	if math.Round(clr.L*100) != math.Round(clr1.L*100) {
-		return false
-	}
-
-	return true
+	return math.Round(clr.H) == math.Round(clr1.H) &&
+		math.Round(clr.S*100) == math.Round(clr1.S*100) &&
+		math.Round(clr.L*100) == math.Round(clr1.L*100)
 }
 
 func (clr HSL) String() string {
