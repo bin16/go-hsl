@@ -55,3 +55,12 @@ func (clr HSL) String() string {
 		math.Round(clr.L*100),
 	)
 }
+
+// NOTE: s and l here are from 0 to 100
+func New[T int | float64](h, s, l T) HSL {
+	return HSL{
+		H: float64(h),
+		S: float64(s) / 100,
+		L: float64(l) / 100,
+	}
+}
